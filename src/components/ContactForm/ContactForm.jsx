@@ -1,33 +1,35 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
-export class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
+export function ContactForm ({onSubmit}){
+const [name, setName] = useState('');
+const [number, setNumber] = useState('');
+
+  const handleInputChange = e => {
+    if(e.currentTarget.name=== 'name'){
+      return setName(e.currentTarget.value)
+    }
+    return setNumber(e.currentTarget.value);
   };
 
-  handleInputChange = e => {
-    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
-  };
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.reset();
+    onSubmit({name,number});
+    reset();
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
-  render() {
-    const { name, number } = this.state;
+ 
+   
     return (
       <>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <h2>Name</h2>
           <label htmlFor="name">
             <input
-              onChange={this.handleInputChange}
+              onChange={handleInputChange}
               type="text"
               name="name"
               value={name}
@@ -39,7 +41,7 @@ export class ContactForm extends Component {
           <h2>Number</h2>
           <label htmlFor="number">
             <input
-              onChange={this.handleInputChange}
+              onChange={handleInputChange}
               type="tel"
               name="number"
               value={number}
@@ -48,11 +50,11 @@ export class ContactForm extends Component {
               required
             />
           </label>
-          <button type="submit" onSubmit={this.handleSubmit}>
+          <button type="submit" onSubmit={handleSubmit}>
             Add contact
           </button>
         </form>
       </>
     );
   }
-}
+
